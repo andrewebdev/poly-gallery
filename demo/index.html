@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <title>poly-gallery demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../poly-gallery.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+        .vertical-section-container {
+            max-width: 800px;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+        <h3>poly-gallery</h3>
+        <p>A convenience wrapper that uses both the stage and thumbnails to
+            create a gallery component</p>
+        <demo-snippet>
+            <template>
+                <poly-gallery>
+                    <poly-gallery-stage>
+                        <img src="http://lorempixel.com/500/300/nature/1">
+                        <img src="http://lorempixel.com/500/300/nature/2">
+                        <img src="http://lorempixel.com/500/300/nature/3">
+                        <img src="http://lorempixel.com/500/300/nature/4">
+                        <img src="http://lorempixel.com/500/300/nature/5">
+                    </poly-gallery-stage>
+
+                    <poly-gallery-thumbnails>
+                        <img src="http://lorempixel.com/80/40/nature/1">
+                        <img src="http://lorempixel.com/80/40/nature/2">
+                        <img src="http://lorempixel.com/80/40/nature/3">
+                        <img src="http://lorempixel.com/80/40/nature/4">
+                        <img src="http://lorempixel.com/80/40/nature/5">
+                    </poly-gallery-thumbnails>
+                </poly-gallery>
+            </template>
+        </demo-snippet>
+
+        <h3>poly-gallery-stage</h3>
+        <demo-snippet>
+            <template>
+                <poly-gallery-stage>
+                    <img src="http://lorempixel.com/500/300/nature/1">
+                    <img src="http://lorempixel.com/500/300/nature/2">
+                    <img src="http://lorempixel.com/500/300/nature/3">
+                    <img src="http://lorempixel.com/500/300/nature/4">
+                    <img src="http://lorempixel.com/500/300/nature/5">
+                </poly-gallery-stage>
+            </template>
+        </demo-snippet>
+
+        <h3>poly-gallery-thumbnails</h3>
+        <p>Creates a selectable list of thumbnails</p>
+        <demo-snippet>
+            <template>
+                <poly-gallery-thumbnails>
+                    <img src="http://lorempixel.com/80/40/nature/1">
+                    <img src="http://lorempixel.com/80/40/nature/2">
+                    <img src="http://lorempixel.com/80/40/nature/3">
+                    <img src="http://lorempixel.com/80/40/nature/4">
+                    <img src="http://lorempixel.com/80/40/nature/5">
+                </poly-gallery-thumbnails>
+            </template>
+        </demo-snippet>
+
+    </div>
+
+  </body>
+</html>

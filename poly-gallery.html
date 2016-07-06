@@ -1,0 +1,197 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-selector/iron-selector.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+
+<dom-module id="poly-gallery-stage">
+    <style>
+        :host {
+            display: block;
+            position: relative;
+        }
+
+        #nav {
+            position: absolute;
+            top: 0; bottom: 0;
+            left: 0; right: 0;
+            @apply(--layout-horizontal);
+            @apply(--layout-justified);
+            @apply(--layout-center);
+        }
+        #nav div {
+            padding: 1em;
+            color: #afafaf;
+            background-color: transparent;
+            cursor: pointer;
+        }
+        #nav div:hover {
+            color: #5f5f5f;
+            background-color: white;
+        }
+
+        #next { border-radius: 3px 0 0 3px; }
+        #prev { border-radius: 0 3px 3px 0; }
+
+    </style>
+    <template>
+        <iron-pages id="stage" selected="{{selected}}">
+            <content></content>
+        </iron-pages>
+
+        <div id="nav">
+            <div id="prev" href="" on-click="_handlePrevClick">Prev</div>
+            <div id="next" href="" on-click="_handleNextClick">Next</div>
+        </div>
+    </template>
+</dom-module>
+<script>
+    (function() {
+        'use strict';
+
+        Polymer({
+            is: 'poly-gallery-stage',
+            properties: {
+                selected: {
+                    type: String,
+                    value: 0
+                }
+            },
+
+            ready: function() {
+                // TODO: set the width based on the image
+                this.style.width = "500px";
+                this.style.height - "300px";
+            },
+
+            _handlePrevClick: function(e) {
+                this.$.stage.selectPrevious();
+                this.fire('changed', {selected: this.selected});
+            },
+
+            _handleNextClick: function(e) {
+                this.$.stage.selectNext();
+                this.fire('changed', {selected: this.selected});
+            }
+        });
+
+    })();
+</script>
+
+
+<dom-module id="poly-gallery-thumbnails">
+    <style>
+        :host {
+            display: block;
+            width: 100%;
+            @apply(--layout-horizontal);
+            @apply(--layout-center-justified);
+            @apply(--layout-center);
+        }
+
+        .nav {
+            color: #afafaf;
+            text-decoration: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .nav:hover { color: #5f5f5f; }
+
+        #thumbs {
+            @apply(--layout-horizontal);
+        }
+
+        #thumbs > ::content img {
+            border: 2px solid transparent;
+            margin: 5px;
+        }
+        #thumbs > ::content .iron-selected {
+            border-color: #afafaf;
+        }
+    </style>
+    <template>
+        <div class="nav" href="" on-click="_handlePrevClick">Prev</div>
+
+        <iron-selector id="thumbs" selected="{{selected}}" on-iron-select="_handleSelect">
+            <content></content>
+        </iron-selector>
+
+        <div class="nav" href="" on-click="_handleNextClick">Next</div>
+    </template>
+</dom-module>
+<script>
+    (function() {
+        'use strict';
+
+        Polymer({
+            is: 'poly-gallery-thumbnails',
+            properties: {
+                selected: {
+                    type: String,
+                    value: 0,
+                    notify: true
+                }
+            },
+
+            _handleSelect: function(ev) {
+                if (this._prevSelected !== this.selected) {
+                    this.fire('changed', {selected: this.selected});
+                }
+            },
+
+            _handlePrevClick: function(e) {
+                this._prevSelected = this.selected;
+                this.$.thumbs.selectPrevious();
+            },
+
+            _handleNextClick: function(e) {
+                this._prevSelected = this.selected;
+                this.$.thumbs.selectNext();
+            }
+        });
+
+    })();
+</script>
+
+
+<dom-module id="poly-gallery">
+    <template>
+        <style>
+            :host {
+                @apply(--layout-center);
+                @apply(--layout-vertical);
+            }
+        </style>
+        <content></content>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'poly-gallery',
+
+            properties: {
+                selected: String
+            },
+
+            attached: function() {
+                this._stage = this.queryEffectiveChildren('poly-gallery-stage');
+                this._thumbs = this.queryEffectiveChildren('poly-gallery-thumbnails');
+
+                this.listen(this._stage, 'changed', '_handleStageChanged');
+                this.listen(this._thumbs, 'changed', '_handleThumbsChanged');
+            },
+
+            _handleStageChanged: function(ev) {
+                this.selected = ev.detail.selected;
+                this._thumbs.selected = this.selected;
+            },
+
+            _handleThumbsChanged: function(ev) {
+                this.selected = ev.detail.selected;
+                this._stage.selected = this.selected;
+            }
+
+        });
+    </script>
+</dom-module>
